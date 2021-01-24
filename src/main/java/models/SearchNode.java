@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SearchNode {
     private final byte x;

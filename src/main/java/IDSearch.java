@@ -1,8 +1,9 @@
 import models.SearchNode;
 import models.SearchResult;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,18 +57,35 @@ public class IDSearch {
             for (SearchNode childSearchNode: searchNode.expand()) {
                 if (grid[childSearchNode.getX()][childSearchNode.getY()] == 1) {
                     // Traffic / Roadblock -> ignore
-                } else if (!frontier.contains(childSearchNode) && !explored.contains(childSearchNode)) {
-                    frontier.add(childSearchNode);
+                } else {
+                    boolean shouldAddToFrontier = false;
+                    // If the frontier includes this x,y but at a greater depth -> replace it
+                    ArrayList<SearchNode> inFrontierButDeeper = frontier.stream().filter(n -> n.getX() == childSearchNode.getX() && n.getY() == childSearchNode.getY() && n.getDepth() > childSearchNode.getDepth()).collect(Collectors.toCollection(ArrayList::new));
+                    if (!inFrontierButDeeper.isEmpty()) {
+                        inFrontierButDeeper.forEach(frontier::remove);
+                        shouldAddToFrontier = true;
+                    }
+
+                    // If the explored includes this x,y but at a greater depth -> remove from explored and add to frontier
+                    ArrayList<SearchNode> inExploredButDeeper = explored.stream().filter(n -> n.getX() == childSearchNode.getX() && n.getY() == childSearchNode.getY() && n.getDepth() > childSearchNode.getDepth()).collect(Collectors.toCollection(ArrayList::new));
+                    if (!inExploredButDeeper.isEmpty()) {
+                        inExploredButDeeper.forEach(explored::remove);
+                        shouldAddToFrontier = true;
+                    }
+
+                    if (shouldAddToFrontier || !frontier.contains(childSearchNode) && !explored.contains(childSearchNode)) {
+                        frontier.add(childSearchNode);
+                    }
+                }
+                if (!frontier.isEmpty()) {
+                    SearchResult result = recursiveDepthLimitedSearch(frontier.get(frontier.size() - 1), grid, limit - 1);
+                    if (result == SearchResult.Cutoff) {
+                        cutOffOccurred = true;
+                    } else if (result != SearchResult.Failure) {
+                        return result;
+                    }
                 }
                 this.logger.info("Expanded node: {}. New frontier: {}", searchNode, frontier);
-            }
-            if (frontier.size() > 0) {
-                SearchResult result = recursiveDepthLimitedSearch(frontier.get(frontier.size() - 1), grid, limit - 1);
-                if (result == SearchResult.Cutoff) {
-                    cutOffOccurred = true;
-                } else if (result != SearchResult.Failure) {
-                    return result;
-                }
             }
             if (cutOffOccurred) {
                 return SearchResult.Cutoff;
