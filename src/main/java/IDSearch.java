@@ -61,7 +61,7 @@ public class IDSearch {
                 }
             }
             this.logger.info("Expanded node: {}. New frontier: {}", searchNode, frontier);
-            SearchResult result = recursiveDepthLimitedSearch(frontier.get(0), grid, limit - 1);
+            SearchResult result = recursiveDepthLimitedSearch(frontier.get(frontier.size() - 1), grid, limit - 1);
             if (result == SearchResult.Cutoff) {
                 cutOffOccurred = true;
             } if (result != SearchResult.Failure) {
