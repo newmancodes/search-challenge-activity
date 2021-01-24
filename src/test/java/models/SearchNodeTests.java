@@ -2,6 +2,8 @@ package models;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchNodeTests {
@@ -61,6 +63,56 @@ public class SearchNodeTests {
 
         // Assert
         assertEquals("Value supplied as depth must not be negative. -1 was supplied.", exception.getMessage());
+    }
+
+    @Test
+    public void expanding_a_non_edge_searchnode_contains_four_neighbours() {
+        // Arrange
+        final SearchNode searchNode = new SearchNode((byte)2, (byte)2, (byte)0);
+
+        // Act
+        ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
+        searchNode.expand().forEach(neighbours::add);
+
+        // Assert
+        assertEquals(4, neighbours.size());
+        assertEquals(new SearchNode((byte)1,(byte)2,(byte)1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)2,(byte)1,(byte)1), neighbours.get(1));
+        assertEquals(new SearchNode((byte)3,(byte)2,(byte)1), neighbours.get(2));
+        assertEquals(new SearchNode((byte)2,(byte)3,(byte)1), neighbours.get(3));
+        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
+    }
+
+    @Test
+    public void expanding_top_left_searchnode_contains_two_neighbours() {
+        // Arrange
+        final SearchNode searchNode = new SearchNode((byte)0, (byte)0, (byte)0);
+
+        // Act
+        ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
+        searchNode.expand().forEach(neighbours::add);
+
+        // Assert
+        assertEquals(2, neighbours.size());
+        assertEquals(new SearchNode((byte)1,(byte)0,(byte)1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)0,(byte)1,(byte)1), neighbours.get(1));
+        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
+    }
+
+    @Test
+    public void expanding_bottom_right_searchnode_contains_two_neighbours() {
+        // Arrange
+        final SearchNode searchNode = new SearchNode((byte)14, (byte)14, (byte)0);
+
+        // Act
+        ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
+        searchNode.expand().forEach(neighbours::add);
+
+        // Assert
+        assertEquals(2, neighbours.size());
+        assertEquals(new SearchNode((byte)13,(byte)14,(byte)1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)14,(byte)13,(byte)1), neighbours.get(1));
+        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
     }
 
     @Test

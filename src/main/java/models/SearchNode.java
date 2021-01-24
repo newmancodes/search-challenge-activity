@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class SearchNode {
@@ -35,6 +36,33 @@ public class SearchNode {
 
     public byte getDepth() {
         return depth;
+    }
+
+    public Iterable<SearchNode> expand() {
+        boolean canMoveUp = y > 0;
+        boolean canMoveDown = y < 14;
+        boolean canMoveLeft = x > 0;
+        boolean canMoveRight = x < 14;
+
+        ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
+
+        if (canMoveLeft) {
+            neighbours.add(new SearchNode((byte)(getX() - 1), getY(), (byte)(getDepth() + 1)));
+        }
+
+        if (canMoveUp) {
+            neighbours.add(new SearchNode(getX(), (byte)(getY() - 1), (byte)(getDepth() + 1)));
+        }
+
+        if (canMoveRight) {
+            neighbours.add(new SearchNode((byte)(getX() + 1), getY(), (byte)(getDepth() + 1)));
+        }
+
+        if (canMoveDown) {
+            neighbours.add(new SearchNode(getX(), (byte)(getY() + 1), (byte)(getDepth() + 1)));
+        }
+
+        return neighbours;
     }
 
     @Override
