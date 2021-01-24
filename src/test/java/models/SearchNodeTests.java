@@ -72,7 +72,7 @@ public class SearchNodeTests {
         final String representation = searchNode.toString();
 
         // Assert
-        final String expectedRepresentation = "SearchNode{x=2, y=54, depth=97}";
+        final String expectedRepresentation = "(2,54,97)";
         assertEquals(representation, expectedRepresentation);
     }
 

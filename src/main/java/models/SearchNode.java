@@ -39,11 +39,7 @@ public class SearchNode {
 
     @Override
     public String toString() {
-        return "SearchNode{" +
-                "x=" + x +
-                ", y=" + y +
-                ", depth=" + depth +
-                '}';
+        return "(" + x + ',' + y + ',' + depth + ')';
     }
 
     @Override
