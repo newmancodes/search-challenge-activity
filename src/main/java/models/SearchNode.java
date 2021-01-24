@@ -9,15 +9,15 @@ public class SearchNode {
 
     public SearchNode(byte x, byte y, byte depth) {
         if (x < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(String.format("Value supplied as x must not be negative. %d was supplied.", x));
         }
 
         if (y < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(String.format("Value supplied as y must not be negative. %d was supplied.", y));
         }
 
         if (depth < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(String.format("Value supplied as depth must not be negative. %d was supplied.", depth));
         }
 
         this.x = x;
