@@ -45,6 +45,7 @@ public class IDSearch {
 
     private SearchResult recursiveDepthLimitedSearch(SearchNode searchNode, int[][] grid, int limit) {
         if (grid[searchNode.getX()][searchNode.getY()] == 3) {
+            this.logger.info("Found a path to {}", searchNode);
             return SearchResult.Solved;
         } else if (limit == 0) {
             return SearchResult.Cutoff;
@@ -60,7 +61,7 @@ public class IDSearch {
                 }
             }
             this.logger.info("Expanded node: {}. New frontier: {}", searchNode, frontier);
-            SearchResult result = recursiveDepthLimitedSearch(frontier.get(frontier.size() - 1), grid, limit - 1);
+            SearchResult result = recursiveDepthLimitedSearch(frontier.get(0), grid, limit - 1);
             if (result == SearchResult.Cutoff) {
                 cutOffOccurred = true;
             } if (result != SearchResult.Failure) {
