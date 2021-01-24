@@ -16,7 +16,7 @@ public class IDSearchTests {
         // Assert
         assertEquals(SearchResult.Solved, result);
     }
-/*
+
     @Test
     public void perform_search_with_grid_2() {
         // Arrange
@@ -68,5 +68,4 @@ public class IDSearchTests {
         // Assert
         assertEquals(SearchResult.Solved, result);
     }
- */
 }

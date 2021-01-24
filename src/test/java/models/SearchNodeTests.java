@@ -12,7 +12,7 @@ public class SearchNodeTests {
         // Arrange
         final byte x = 14;
         final byte y = 32;
-        final byte depth = 123;
+        final int depth = 123;
 
         // Act
         final SearchNode searchNode = new SearchNode(x, y, depth);
@@ -28,7 +28,7 @@ public class SearchNodeTests {
         // Arrange
         final byte x = -1;
         final byte y = 0;
-        final byte depth = 0;
+        final int depth = 0;
 
         // Act
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new SearchNode(x, y, depth));
@@ -42,7 +42,7 @@ public class SearchNodeTests {
         // Arrange
         final byte x = 0;
         final byte y = -1;
-        final byte depth = 0;
+        final int depth = 0;
 
         // Act
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new SearchNode(x, y, depth));
@@ -56,7 +56,7 @@ public class SearchNodeTests {
         // Arrange
         final byte x = 0;
         final byte y = 0;
-        final byte depth = -1;
+        final int depth = -1;
 
         // Act
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new SearchNode(x, y, depth));
@@ -68,7 +68,7 @@ public class SearchNodeTests {
     @Test
     public void expanding_a_non_edge_searchnode_contains_four_neighbours() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)2, (byte)2, (byte)0);
+        final SearchNode searchNode = new SearchNode((byte)2, (byte)2, 0);
 
         // Act
         ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
@@ -76,17 +76,17 @@ public class SearchNodeTests {
 
         // Assert
         assertEquals(4, neighbours.size());
-        assertEquals(new SearchNode((byte)1,(byte)2,(byte)1), neighbours.get(0));
-        assertEquals(new SearchNode((byte)2,(byte)1,(byte)1), neighbours.get(1));
-        assertEquals(new SearchNode((byte)3,(byte)2,(byte)1), neighbours.get(2));
-        assertEquals(new SearchNode((byte)2,(byte)3,(byte)1), neighbours.get(3));
+        assertEquals(new SearchNode((byte)1,(byte)2,1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)2,(byte)1,1), neighbours.get(1));
+        assertEquals(new SearchNode((byte)3,(byte)2,1), neighbours.get(2));
+        assertEquals(new SearchNode((byte)2,(byte)3,1), neighbours.get(3));
         assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
     }
 
     @Test
     public void expanding_top_left_searchnode_contains_two_neighbours() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)0, (byte)0, (byte)0);
+        final SearchNode searchNode = new SearchNode((byte)0, (byte)0, 0);
 
         // Act
         ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
@@ -94,15 +94,15 @@ public class SearchNodeTests {
 
         // Assert
         assertEquals(2, neighbours.size());
-        assertEquals(new SearchNode((byte)1,(byte)0,(byte)1), neighbours.get(0));
-        assertEquals(new SearchNode((byte)0,(byte)1,(byte)1), neighbours.get(1));
+        assertEquals(new SearchNode((byte)1,(byte)0, 1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)0,(byte)1, 1), neighbours.get(1));
         assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
     }
 
     @Test
     public void expanding_bottom_right_searchnode_contains_two_neighbours() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)14, (byte)14, (byte)0);
+        final SearchNode searchNode = new SearchNode((byte)14, (byte)14, 0);
 
         // Act
         ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
@@ -110,15 +110,15 @@ public class SearchNodeTests {
 
         // Assert
         assertEquals(2, neighbours.size());
-        assertEquals(new SearchNode((byte)13,(byte)14,(byte)1), neighbours.get(0));
-        assertEquals(new SearchNode((byte)14,(byte)13,(byte)1), neighbours.get(1));
+        assertEquals(new SearchNode((byte)13,(byte)14, 1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)14,(byte)13, 1), neighbours.get(1));
         assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
     }
 
     @Test
     public void toString_outputs_expected_representation() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)2, (byte)54, (byte)97);
+        final SearchNode searchNode = new SearchNode((byte)2, (byte)54, 97);
 
         // Act
         final String representation = searchNode.toString();
@@ -131,7 +131,7 @@ public class SearchNodeTests {
     @Test
     public void a_searchnode_is_equal_to_itself() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)67, (byte)0, (byte)104);
+        final SearchNode searchNode = new SearchNode((byte)67, (byte)0, 104);
 
         // Act
         final Boolean areEqual = searchNode.equals(searchNode);
@@ -145,7 +145,7 @@ public class SearchNodeTests {
         // Arrange
         final byte x = 5;
         final byte y = 23;
-        final byte depth = 100;
+        final int depth = 100;
         final SearchNode searchNode = new SearchNode(x, y, depth);
         final SearchNode identicalSearchNode = new SearchNode(x, y, depth);
 
@@ -161,7 +161,7 @@ public class SearchNodeTests {
     public void two_searchnodes_that_differ_by_x_only_are_not_equal() {
         // Arrange
         final byte y = 54;
-        final byte depth = 127;
+        final int depth = 127;
         final SearchNode searchNode = new SearchNode((byte)87, y, depth);
         final SearchNode differentXSearchNode = new SearchNode((byte)41, y, depth);
 
@@ -177,7 +177,7 @@ public class SearchNodeTests {
     public void two_searchnodes_that_differ_by_y_only_are_not_equal() {
         // Arrange
         final byte x = 32;
-        final byte depth = 127;
+        final int depth = 127;
         final SearchNode searchNode = new SearchNode(x, (byte)12, depth);
         final SearchNode differentYSearchNode = new SearchNode(x, (byte)6, depth);
 
@@ -194,8 +194,8 @@ public class SearchNodeTests {
         // Arrange
         final byte x = 87;
         final byte y = 98;
-        final SearchNode searchNode = new SearchNode(x, y, (byte)12);
-        final SearchNode differentDepthSearchNode = new SearchNode(x, y, (byte)73);
+        final SearchNode searchNode = new SearchNode(x, y, 12);
+        final SearchNode differentDepthSearchNode = new SearchNode(x, y, 73);
 
         // Act
         final Boolean areEqual = searchNode.equals(differentDepthSearchNode);
@@ -208,7 +208,7 @@ public class SearchNodeTests {
     @Test
     public void searchnode_and_null_are_not_equal() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)12, (byte)0, (byte)2);
+        final SearchNode searchNode = new SearchNode((byte)12, (byte)0, 2);
 
         // Act
         final Boolean areEqual = searchNode.equals(null);
@@ -220,7 +220,7 @@ public class SearchNodeTests {
     @Test
     public void searchnode_and_another_type_are_not_equal() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)12, (byte)0, (byte)2);
+        final SearchNode searchNode = new SearchNode((byte)12, (byte)0, 2);
 
         // Act
         final Boolean areEqual = searchNode.equals(Integer.valueOf(42));
