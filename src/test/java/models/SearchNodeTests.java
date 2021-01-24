@@ -1,7 +1,8 @@
 package models;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchNodeTests {
     @Test
@@ -15,12 +16,12 @@ public class SearchNodeTests {
         final SearchNode searchNode = new SearchNode(x, y, depth);
 
         // Assert
-        Assert.assertEquals(searchNode.getX(), x);
-        Assert.assertEquals(searchNode.getY(), y);
-        Assert.assertEquals(searchNode.getDepth(), depth);
+        assertEquals(searchNode.getX(), x);
+        assertEquals(searchNode.getY(), y);
+        assertEquals(searchNode.getDepth(), depth);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void x_must_not_be_negative() {
         // Arrange
         final byte x = -1;
@@ -28,10 +29,13 @@ public class SearchNodeTests {
         final byte depth = 0;
 
         // Act
-        final SearchNode searchNode = new SearchNode(x, y, depth);
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new SearchNode(x, y, depth));
+
+        // Assert
+        assertEquals("Value supplied as x must not be negative. -1 was supplied.", exception.getMessage());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void y_must_not_be_negative() {
         // Arrange
         final byte x = 0;
@@ -39,10 +43,13 @@ public class SearchNodeTests {
         final byte depth = 0;
 
         // Act
-        final SearchNode searchNode = new SearchNode(x, y, depth);
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new SearchNode(x, y, depth));
+
+        // Assert
+        assertEquals("Value supplied as y must not be negative. -1 was supplied.", exception.getMessage());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void depth_must_not_be_negative() {
         // Arrange
         final byte x = 0;
@@ -50,7 +57,10 @@ public class SearchNodeTests {
         final byte depth = -1;
 
         // Act
-        final SearchNode searchNode = new SearchNode(x, y, depth);
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new SearchNode(x, y, depth));
+
+        // Assert
+        assertEquals("Value supplied as depth must not be negative. -1 was supplied.", exception.getMessage());
     }
 
     @Test
@@ -63,7 +73,7 @@ public class SearchNodeTests {
 
         // Assert
         final String expectedRepresentation = "SearchNode{x=2, y=54, depth=97}";
-        Assert.assertEquals(representation, expectedRepresentation);
+        assertEquals(representation, expectedRepresentation);
     }
 
     @Test
@@ -75,7 +85,7 @@ public class SearchNodeTests {
         final Boolean areEqual = searchNode.equals(searchNode);
 
         // Assert
-        Assert.assertTrue(areEqual);
+        assertTrue(areEqual);
     }
 
     @Test
@@ -91,8 +101,8 @@ public class SearchNodeTests {
         final Boolean areEqual = searchNode.equals(identicalSearchNode);
 
         // Assert
-        Assert.assertTrue(areEqual);
-        Assert.assertEquals(searchNode.hashCode(), identicalSearchNode.hashCode());
+        assertTrue(areEqual);
+        assertEquals(searchNode.hashCode(), identicalSearchNode.hashCode());
     }
 
     @Test
@@ -107,8 +117,8 @@ public class SearchNodeTests {
         final Boolean areEqual = searchNode.equals(differentXSearchNode);
 
         // Assert
-        Assert.assertFalse(areEqual);
-        Assert.assertNotEquals(searchNode.hashCode(), differentXSearchNode.hashCode());
+        assertFalse(areEqual);
+        assertNotEquals(searchNode.hashCode(), differentXSearchNode.hashCode());
     }
 
     @Test
@@ -123,8 +133,8 @@ public class SearchNodeTests {
         final Boolean areEqual = searchNode.equals(differentYSearchNode);
 
         // Assert
-        Assert.assertFalse(areEqual);
-        Assert.assertNotEquals(searchNode.hashCode(), differentYSearchNode.hashCode());
+        assertFalse(areEqual);
+        assertNotEquals(searchNode.hashCode(), differentYSearchNode.hashCode());
     }
 
     @Test
@@ -139,8 +149,8 @@ public class SearchNodeTests {
         final Boolean areEqual = searchNode.equals(differentDepthSearchNode);
 
         // Assert
-        Assert.assertTrue(areEqual);
-        Assert.assertEquals(searchNode.hashCode(), differentDepthSearchNode.hashCode());
+        assertTrue(areEqual);
+        assertEquals(searchNode.hashCode(), differentDepthSearchNode.hashCode());
     }
 
     @Test
@@ -152,7 +162,7 @@ public class SearchNodeTests {
         final Boolean areEqual = searchNode.equals(null);
 
         // Assert
-        Assert.assertFalse(areEqual);
+        assertFalse(areEqual);
     }
 
     @Test
@@ -164,6 +174,6 @@ public class SearchNodeTests {
         final Boolean areEqual = searchNode.equals(Integer.valueOf(42));
 
         // Assert
-        Assert.assertFalse(areEqual);
+        assertFalse(areEqual);
     }
 }
