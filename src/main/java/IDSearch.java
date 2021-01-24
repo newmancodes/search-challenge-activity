@@ -59,13 +59,15 @@ public class IDSearch {
                 } else if (!frontier.contains(childSearchNode) && !explored.contains(childSearchNode)) {
                     frontier.add(childSearchNode);
                 }
+                this.logger.info("Expanded node: {}. New frontier: {}", searchNode, frontier);
             }
-            this.logger.info("Expanded node: {}. New frontier: {}", searchNode, frontier);
-            SearchResult result = recursiveDepthLimitedSearch(frontier.get(frontier.size() - 1), grid, limit - 1);
-            if (result == SearchResult.Cutoff) {
-                cutOffOccurred = true;
-            } if (result != SearchResult.Failure) {
-                return result;
+            if (frontier.size() > 0) {
+                SearchResult result = recursiveDepthLimitedSearch(frontier.get(frontier.size() - 1), grid, limit - 1);
+                if (result == SearchResult.Cutoff) {
+                    cutOffOccurred = true;
+                } else if (result != SearchResult.Failure) {
+                    return result;
+                }
             }
             if (cutOffOccurred) {
                 return SearchResult.Cutoff;
