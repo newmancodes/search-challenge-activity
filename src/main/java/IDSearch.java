@@ -77,8 +77,8 @@ public class IDSearch {
                         frontier.add(childSearchNode);
                     }
                 }
-                if (!frontier.isEmpty()) {
-                    SearchResult result = recursiveDepthLimitedSearch(frontier.get(frontier.size() - 1), grid, limit - 1);
+                if (frontier.contains(childSearchNode)) {
+                    SearchResult result = recursiveDepthLimitedSearch(childSearchNode, grid, limit - 1);
                     if (result == SearchResult.Cutoff) {
                         cutOffOccurred = true;
                     } else if (result != SearchResult.Failure) {
