@@ -73,7 +73,7 @@ public class IDSearch {
                         shouldAddToFrontier = true;
                     }
 
-                    if (shouldAddToFrontier || !frontier.contains(childSearchNode) && !explored.contains(childSearchNode)) {
+                    if (shouldAddToFrontier || (!frontier.contains(childSearchNode) && !explored.contains(childSearchNode))) {
                         frontier.add(childSearchNode);
                     }
                 }
