@@ -47,6 +47,13 @@ public class IDSearch {
     private SearchResult recursiveDepthLimitedSearch(SearchNode searchNode, int[][] grid, int limit) {
         if (grid[searchNode.getX()][searchNode.getY()] == 3) {
             this.logger.info("Found a path to {}", searchNode);
+            String path = "";
+            SearchNode step = searchNode;
+            while (step != null) {
+                path = String.format("%s %s", step.toString(), path);
+                step = step.getParent();
+            }
+            this.logger.info(path);
             return SearchResult.Solved;
         } else if (limit == 0) {
             return SearchResult.Cutoff;
