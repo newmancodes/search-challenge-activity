@@ -64,22 +64,22 @@ public class SearchNodeTests {
         // Assert
         assertEquals("Value supplied as depth must not be negative. -1 was supplied.", exception.getMessage());
     }
-/*
+
     @Test
     public void expanding_a_non_edge_searchnode_contains_four_neighbours() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)2, (byte)2, 0);
+        final SearchNode searchNode = new SearchNode((byte)1, (byte)1, 0);
 
         // Act
         ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
-        searchNode.expand().forEach(neighbours::add);
+        searchNode.expand(new int[3][3]).forEach(neighbours::add);
 
         // Assert
         assertEquals(4, neighbours.size());
-        assertEquals(new SearchNode((byte)1,(byte)2,1), neighbours.get(0));
-        assertEquals(new SearchNode((byte)2,(byte)1,1), neighbours.get(1));
-        assertEquals(new SearchNode((byte)3,(byte)2,1), neighbours.get(2));
-        assertEquals(new SearchNode((byte)2,(byte)3,1), neighbours.get(3));
+        assertEquals(new SearchNode((byte)0,(byte)1,1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)1,(byte)0,1), neighbours.get(1));
+        assertEquals(new SearchNode((byte)2,(byte)1,1), neighbours.get(2));
+        assertEquals(new SearchNode((byte)1,(byte)2,1), neighbours.get(3));
         assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
     }
 
@@ -90,7 +90,7 @@ public class SearchNodeTests {
 
         // Act
         ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
-        searchNode.expand().forEach(neighbours::add);
+        searchNode.expand(new int[5][5]).forEach(neighbours::add);
 
         // Assert
         assertEquals(2, neighbours.size());
@@ -102,19 +102,37 @@ public class SearchNodeTests {
     @Test
     public void expanding_bottom_right_searchnode_contains_two_neighbours() {
         // Arrange
-        final SearchNode searchNode = new SearchNode((byte)14, (byte)14, 0);
+        final SearchNode searchNode = new SearchNode((byte)4, (byte)4, 0);
 
         // Act
         ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
-        searchNode.expand().forEach(neighbours::add);
+        searchNode.expand(new int[5][5]).forEach(neighbours::add);
 
         // Assert
         assertEquals(2, neighbours.size());
-        assertEquals(new SearchNode((byte)13,(byte)14, 1), neighbours.get(0));
-        assertEquals(new SearchNode((byte)14,(byte)13, 1), neighbours.get(1));
+        assertEquals(new SearchNode((byte)3,(byte)4, 1), neighbours.get(0));
+        assertEquals(new SearchNode((byte)4,(byte)3, 1), neighbours.get(1));
         assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
     }
-*/
+
+    @Test
+    public void expanding_searchnode_surrounded_by_roadblocks_contains_zero_neighbours() {
+        // Arrange
+        final SearchNode searchNode = new SearchNode((byte)1, (byte)1, 0);
+        int[][] grid = new int[3][3];
+        grid[0][1] = 1;
+        grid[1][0] = 1;
+        grid[2][1] = 1;
+        grid[1][2] = 1;
+
+        // Act
+        ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
+        searchNode.expand(grid).forEach(neighbours::add);
+
+        // Assert
+        assertEquals(0, neighbours.size());
+    }
+
     @Test
     public void toString_outputs_expected_representation() {
         // Arrange
