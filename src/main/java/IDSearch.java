@@ -54,28 +54,24 @@ public class IDSearch {
             boolean cutOffOccurred = false;
             frontier.remove(searchNode);
             explored.add(searchNode);
-            for (SearchNode childSearchNode: searchNode.expand()) {
-                if (grid[childSearchNode.getX()][childSearchNode.getY()] == 1) {
-                    // Traffic / Roadblock -> ignore
-                } else {
-                    boolean shouldAddToFrontier = false;
-                    // If the frontier includes this x,y but at a greater depth -> replace it
-                    ArrayList<SearchNode> inFrontierButDeeper = frontier.stream().filter(n -> n.getX() == childSearchNode.getX() && n.getY() == childSearchNode.getY() && n.getDepth() > childSearchNode.getDepth()).collect(Collectors.toCollection(ArrayList::new));
-                    if (!inFrontierButDeeper.isEmpty()) {
-                        inFrontierButDeeper.forEach(frontier::remove);
-                        shouldAddToFrontier = true;
-                    }
+            for (SearchNode childSearchNode: searchNode.expand(grid)) {
+                boolean shouldAddToFrontier = false;
+                // If the frontier includes this x,y but at a greater depth -> replace it
+                ArrayList<SearchNode> inFrontierButDeeper = frontier.stream().filter(n -> n.getX() == childSearchNode.getX() && n.getY() == childSearchNode.getY() && n.getDepth() > childSearchNode.getDepth()).collect(Collectors.toCollection(ArrayList::new));
+                if (!inFrontierButDeeper.isEmpty()) {
+                    inFrontierButDeeper.forEach(frontier::remove);
+                    shouldAddToFrontier = true;
+                }
 
-                    // If the explored includes this x,y but at a greater depth -> remove from explored and add to frontier
-                    ArrayList<SearchNode> inExploredButDeeper = explored.stream().filter(n -> n.getX() == childSearchNode.getX() && n.getY() == childSearchNode.getY() && n.getDepth() > childSearchNode.getDepth()).collect(Collectors.toCollection(ArrayList::new));
-                    if (!inExploredButDeeper.isEmpty()) {
-                        inExploredButDeeper.forEach(explored::remove);
-                        shouldAddToFrontier = true;
-                    }
+                // If the explored includes this x,y but at a greater depth -> remove from explored and add to frontier
+                ArrayList<SearchNode> inExploredButDeeper = explored.stream().filter(n -> n.getX() == childSearchNode.getX() && n.getY() == childSearchNode.getY() && n.getDepth() > childSearchNode.getDepth()).collect(Collectors.toCollection(ArrayList::new));
+                if (!inExploredButDeeper.isEmpty()) {
+                    inExploredButDeeper.forEach(explored::remove);
+                    shouldAddToFrontier = true;
+                }
 
-                    if (shouldAddToFrontier || (!frontier.contains(childSearchNode) && !explored.contains(childSearchNode))) {
-                        frontier.add(childSearchNode);
-                    }
+                if (shouldAddToFrontier || (!frontier.contains(childSearchNode) && !explored.contains(childSearchNode))) {
+                    frontier.add(childSearchNode);
                 }
                 if (frontier.contains(childSearchNode)) {
                     SearchResult result = recursiveDepthLimitedSearch(childSearchNode, grid, limit - 1);

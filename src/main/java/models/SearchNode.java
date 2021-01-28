@@ -39,28 +39,40 @@ public class SearchNode {
         return depth;
     }
 
-    public Iterable<SearchNode> expand() {
+    public Iterable<SearchNode> expand(int[][] grid) {
         boolean canMoveUp = y > 0;
-        boolean canMoveDown = y < 14;
+        boolean canMoveDown = y < grid[this.getX()].length - 1;
         boolean canMoveLeft = x > 0;
-        boolean canMoveRight = x < 14;
+        boolean canMoveRight = x < grid.length - 1;
 
         ArrayList<SearchNode> neighbours = new ArrayList<SearchNode>();
 
         if (canMoveLeft) {
-            neighbours.add(new SearchNode((byte)(getX() - 1), getY(), getDepth() + 1));
+            SearchNode neighbour = new SearchNode((byte) (getX() - 1), getY(), getDepth() + 1);
+            if (grid[neighbour.getX()][neighbour.getY()] != 1) {
+                neighbours.add(neighbour);
+            }
         }
 
         if (canMoveUp) {
-            neighbours.add(new SearchNode(getX(), (byte)(getY() - 1), getDepth() + 1));
+            SearchNode neighbour = new SearchNode(getX(), (byte) (getY() - 1), getDepth() + 1);
+            if (grid[neighbour.getX()][neighbour.getY()] != 1) {
+                neighbours.add(neighbour);
+            }
         }
 
         if (canMoveRight) {
-            neighbours.add(new SearchNode((byte)(getX() + 1), getY(), getDepth() + 1));
+            SearchNode neighbour = new SearchNode((byte) (getX() + 1), getY(), getDepth() + 1);
+            if (grid[neighbour.getX()][neighbour.getY()] != 1) {
+                neighbours.add(neighbour);
+            }
         }
 
         if (canMoveDown) {
-            neighbours.add(new SearchNode(getX(), (byte)(getY() + 1), getDepth() + 1));
+            SearchNode neighbour = new SearchNode(getX(), (byte) (getY() + 1), getDepth() + 1);
+            if (grid[neighbour.getX()][neighbour.getY()] != 1) {
+                neighbours.add(neighbour);
+            }
         }
 
         return neighbours;

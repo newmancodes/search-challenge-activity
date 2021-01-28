@@ -64,7 +64,7 @@ public class SearchNodeTests {
         // Assert
         assertEquals("Value supplied as depth must not be negative. -1 was supplied.", exception.getMessage());
     }
-
+/*
     @Test
     public void expanding_a_non_edge_searchnode_contains_four_neighbours() {
         // Arrange
@@ -114,7 +114,7 @@ public class SearchNodeTests {
         assertEquals(new SearchNode((byte)14,(byte)13, 1), neighbours.get(1));
         assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
     }
-
+*/
     @Test
     public void toString_outputs_expected_representation() {
         // Arrange
