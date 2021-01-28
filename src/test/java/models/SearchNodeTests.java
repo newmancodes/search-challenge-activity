@@ -21,6 +21,25 @@ public class SearchNodeTests {
         assertEquals(searchNode.getX(), x);
         assertEquals(searchNode.getY(), y);
         assertEquals(searchNode.getDepth(), depth);
+        assertNull(searchNode.getParent());
+    }
+
+    @Test
+    public void constructor_including_parent_correctly_sets_values() {
+        // Arrange
+        final byte x = 14;
+        final byte y = 32;
+        final int depth = 123;
+        SearchNode parent = new SearchNode((byte)(x - 1), y, depth - 1);
+
+        // Act
+        final SearchNode searchNode = new SearchNode(x, y, depth, parent);
+
+        // Assert
+        assertEquals(searchNode.getX(), x);
+        assertEquals(searchNode.getY(), y);
+        assertEquals(searchNode.getDepth(), depth);
+        assertSame(parent, searchNode.getParent());
     }
 
     @Test
@@ -80,7 +99,7 @@ public class SearchNodeTests {
         assertEquals(new SearchNode((byte)1,(byte)0,1), neighbours.get(1));
         assertEquals(new SearchNode((byte)2,(byte)1,1), neighbours.get(2));
         assertEquals(new SearchNode((byte)1,(byte)2,1), neighbours.get(3));
-        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
+        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1 && n.getParent() == searchNode));
     }
 
     @Test
@@ -96,7 +115,7 @@ public class SearchNodeTests {
         assertEquals(2, neighbours.size());
         assertEquals(new SearchNode((byte)1,(byte)0, 1), neighbours.get(0));
         assertEquals(new SearchNode((byte)0,(byte)1, 1), neighbours.get(1));
-        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
+        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1 && n.getParent() == searchNode));
     }
 
     @Test
@@ -112,7 +131,7 @@ public class SearchNodeTests {
         assertEquals(2, neighbours.size());
         assertEquals(new SearchNode((byte)3,(byte)4, 1), neighbours.get(0));
         assertEquals(new SearchNode((byte)4,(byte)3, 1), neighbours.get(1));
-        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1));
+        assertTrue(neighbours.stream().allMatch(n -> n.getDepth() == 1 && n.getParent() == searchNode));
     }
 
     @Test
